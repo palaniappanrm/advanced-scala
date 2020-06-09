@@ -67,7 +67,7 @@ object Intro extends App {
     println(x)
   }
 
-  // for (_ <- 1 to 10000) runInParallel
+   for (_ <- 1 to 5) runInParallel
   // race condition
 
   class BankAccount(@volatile var amount: Int) {
@@ -80,17 +80,17 @@ object Intro extends App {
 //    println("my account is now " + account)
   }
 
-//  for (_ <- 1 to 10000) {
-//    val account = new BankAccount(50000)
-//    val thread1 = new Thread(() => buy(account, "shoes", 3000))
-//    val thread2 = new Thread(() => buy(account, "iPhone12", 4000))
-//
-//    thread1.start()
-//    thread2.start()
-//    Thread.sleep(10)
-//    if (account.amount != 43000) println("AHA: " + account.amount)
-////    println()
-//  }
+  for (_ <- 1 to 3) {
+    val account = new BankAccount(50000)
+    val thread1 = new Thread(() => buy(account, "shoes", 3000))
+    val thread2 = new Thread(() => buy(account, "iPhone12", 4000))
+
+    thread1.start()
+    thread2.start()
+    Thread.sleep(10)
+    if (account.amount != 43000) println("AHA: " + account.amount)
+//    println()
+  }
 
   /*
     thread1 (shoes): 50000
@@ -128,7 +128,7 @@ object Intro extends App {
     println(s"Hello from thread $i")
   })
 
-  inceptionThreads(50).start()
+//  inceptionThreads(50).start()
 
   /*
     2

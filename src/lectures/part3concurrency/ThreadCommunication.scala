@@ -245,7 +245,7 @@ object ThreadCommunication extends App {
     }).start()
   }
 
-  // testNotifyAll()
+//   testNotifyAll()
 
   // 2 - deadlock
   case class Friend(name: String) {
@@ -281,10 +281,10 @@ object ThreadCommunication extends App {
   val sam = Friend("Sam")
   val pierre = Friend("Pierre")
 
-  //  new Thread(() => sam.bow(pierre)).start() // sam's lock,    |  then pierre's lock
-  //  new Thread(() => pierre.bow(sam)).start() // pierre's lock  |  then sam's lock
-
-  // 3 - livelock
-  new Thread(() => sam.pass(pierre)).start()
-  new Thread(() => pierre.pass(sam)).start()
+//    new Thread(() => sam.bow(pierre)).start() // sam's lock,    |  then pierre's lock
+//    new Thread(() => pierre.bow(sam)).start() // pierre's lock  |  then sam's lock
+//
+//  // 3 - livelock
+//  new Thread(() => sam.pass(pierre)).start()
+//  new Thread(() => pierre.pass(sam)).start()
 }

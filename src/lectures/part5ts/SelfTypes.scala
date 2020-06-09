@@ -11,7 +11,8 @@ object SelfTypes extends App {
     def play(): Unit
   }
 
-  trait Singer { this: Instrumentalist => // SELF TYPE whoever implements Singer to implement Instrumentalist
+  trait Singer {
+    this: Instrumentalist => // SELF TYPE whoever implements Singer to implement Instrumentalist
 
     // rest of the implementation or API
     def sing(): Unit
@@ -30,6 +31,8 @@ object SelfTypes extends App {
     override def play(): Unit = ???
     override def sing(): Unit = ???
   }
+
+//  println(jamesHetfield.play())
 
   class Guitarist extends Instrumentalist {
     override def play(): Unit = println("(guitar solo)")

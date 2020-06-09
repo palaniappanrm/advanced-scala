@@ -60,8 +60,8 @@ object MagnetPattern extends App {
     }
   }
 
-  receive(new P2PRequest)
-  receive(new P2PResponse)
+  println(receive(new P2PRequest))
+  println(receive(new P2PResponse))
 
   // 1 - no more type erasure problems!
   implicit class FromResponseFuture(future: Future[P2PResponse]) extends MessageMagnet[Int] {
@@ -101,6 +101,7 @@ object MagnetPattern extends App {
   println(addFV(1))
   println(addFV("3"))
 
+//  below won't work bec it involves generics
   //  val receiveFV = receive _
   //  receiveFV(new P2PResponse)
 
@@ -142,7 +143,7 @@ object MagnetPattern extends App {
   //  handle(sideEffectMethod())
   handle {
     println("Hello, Scala")
-    new StringHandle("magnet")
+    "magnet"
   }
   // careful!
 }

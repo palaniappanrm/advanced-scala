@@ -5,7 +5,7 @@ package lectures.part4implicits
   */
 object OrganizingImplicits extends App {
 
-  implicit def reverseOrdering: Ordering[Int] = Ordering.fromLessThan(_ > _)
+//  implicit def reverseOrdering: Ordering[Int] = Ordering.fromLessThan(_ > _)
 //  implicit val normalOrdering: Ordering[Int] = Ordering.fromLessThan(_ < _)
 
   println(List(1,4,5,3,2).sorted)
@@ -23,16 +23,19 @@ object OrganizingImplicits extends App {
   case class Person(name: String, age: Int)
 
   val persons = List(
-    Person("Steve", 30),
-    Person("Amy", 22),
+    Person("Steve", 22),
+    Person("Amy", 30),
     Person("John", 66)
   )
 
-//  object Person {
-//    implicit val alphabeticOrdering: Ordering[Person] = Ordering.fromLessThan((a, b) => a.name.compareTo(b.name) < 0)
-//  }
+  // singleton object with implicit method works
+  object Person {
+    implicit val alphabeticOrdering: Ordering[Person] = Ordering.fromLessThan((a, b) => a.name.compareTo(b.name) < 0)
+  }
+//  if below both are uncommented, it will throw an error
 //  implicit val ageOrdering: Ordering[Person] = Ordering.fromLessThan((a, b) => a.age < b.age)
-//  println(persons.sorted)
+//  implicit val alphabeticOrdering: Ordering[Person] = Ordering.fromLessThan((a, b) => a.name.compareTo(b.name) < 0)
+  println(persons.sorted)
 
   /*
     Implicit scope

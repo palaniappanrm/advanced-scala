@@ -49,8 +49,9 @@ object Reflection extends App {
   // pp #1: differentiate types at runtime
   val numbers = List(1,2,3)
   numbers match  {
-    case listOfStrings: List[String] => println("list of strings")
-    case listOfNumbers: List[Int] => println("list of numbers")
+//    case x => x
+    case listOfStrings: List[String] => println("list of strings" + listOfStrings)
+    case listOfNumbers: List[Int] => println("list of numbers" + listOfNumbers)
   }
 
   // pp #2: limitations on overloads

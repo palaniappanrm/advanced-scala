@@ -64,6 +64,10 @@ object RockingInheritance extends App {
     def print = println("red")
   }
 
+  /*
+      when you use 'with' -> super points to the parent
+   */
+
   class White extends Red with Green with Blue {
     override def print: Unit = {
       println("white")

@@ -6,12 +6,20 @@ package lectures.part2afp
 object PartialFunctions extends App {
 
   val aFunction = (x: Int) => x + 1 // Function1[Int, Int] === Int => Int
+  def function1(x : Int) : Int = x + 1
+
+  println(function1(1))
+  println(aFunction)
+  println(aFunction(1))
 
   val aFussyFunction = (x: Int) =>
     if (x == 1) 42
     else if (x == 2) 56
     else if (x == 5) 999
     else throw new FunctionNotApplicableException
+
+  println(aFussyFunction)
+  println(aFussyFunction(1))
 
   class FunctionNotApplicableException extends RuntimeException
 
@@ -29,7 +37,7 @@ object PartialFunctions extends App {
   } // partial function value
 
   println(aPartialFunction(2))
-//  println(aPartialFunction(57273))
+  println(aPartialFunction.isDefinedAt(57273))
 
   // PF utilities
   println(aPartialFunction.isDefinedAt(67))
@@ -40,10 +48,13 @@ object PartialFunctions extends App {
   println(lifted(98))
 
   val pfChain = aPartialFunction.orElse[Int, Int] {
+    case 3 => 300
+    case 5 => 500
     case 45 => 67
   }
 
   println(pfChain(2))
+  println(pfChain(5))
   println(pfChain(45))
 
   // PF extend normal functions
@@ -59,6 +70,8 @@ object PartialFunctions extends App {
     case 3 => 1000
   }
   println(aMappedList)
+  val aMappedList2 = List(1,2,3).map(pfChain)
+  println(aMappedList2)
 
   /*
     Note: PF can only have ONE parameter type

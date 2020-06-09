@@ -12,7 +12,7 @@ object Recap extends App {
   val aConditionedVal = if (aCondition) 42 else 65
   // instructions vs expressions
 
-  // compiler infers types for us
+  // compiler infers types for us - last line get's assigned
   val aCodeBlock = {
     if (aCondition) 54
     56
@@ -20,6 +20,7 @@ object Recap extends App {
 
   // Unit = void
   val theUnit = println("hello, Scala")
+  println(theUnit)
 
   // functions
   def aFunction(x: Int): Int = x + 1
@@ -63,11 +64,15 @@ object Recap extends App {
 
   // exceptions and try/catch/finally
 
-  val throwsException = throw new RuntimeException  // Nothing
+//  following will throw an exception
+//  val throwsException = throw new RuntimeException  // Nothing
+//  println(throwsException)
+
   val aPotentialFailure = try {
     throw new RuntimeException
   } catch {
-    case e: Exception => "I caught an exception"
+//  it won't print, unless we do
+    case e: Exception => println("I caught an exception " + e.getMessage)
   } finally {
     println("some logs")
   }
@@ -81,6 +86,7 @@ object Recap extends App {
 
   incrementer(1)
 
+  // defining function using val
   val anonymousIncrementer = (x: Int) => x + 1
   List(1,2,3).map(anonymousIncrementer) // HOF
   // map, flatMap, filter
@@ -90,6 +96,8 @@ object Recap extends App {
     num <- List(1,2,3) // if condition
     char <- List('a', 'b', 'c')
   } yield num + "-" + char
+
+  println(pairs)
 
   // Scala collections: Seqs, Arrays, Lists, Vectors, Maps, Tuples
   val aMap = Map(
@@ -111,8 +119,9 @@ object Recap extends App {
 
   val bob = Person("Bob", 22)
   val greeting = bob match {
-    case Person(n, _) => s"Hi, my name is $n"
+    case Person(n, x) => s"Hi, my name is $n, age is $x"
   }
 
+  println(greeting)
   // all the patterns
 }

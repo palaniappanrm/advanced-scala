@@ -7,7 +7,8 @@ object AdvancedPatternMatching extends App {
 
   val numbers = List(1)
   val description = numbers match {
-    case head :: Nil => println(s"the only element is $head.")
+//    case head => println(s"the only element is $head.")
+    case head :: tail => println(s"the only element is $head.")
     case _ =>
   }
 
@@ -52,12 +53,12 @@ object AdvancedPatternMatching extends App {
   }
 
   object singleDigit {
-    def unapply(arg: Int): Boolean = arg > -10 && arg < 10
+    def unapply(arg: Int): Option[Boolean] = Some(arg > -10 && arg < 10)
   }
 
   val n: Int = 8
   val mathProperty = n match {
-    case singleDigit() => "single digit"
+    case singleDigit(x) => x
     case even() => "an even number"
     case _ => "no property"
   }
@@ -68,7 +69,9 @@ object AdvancedPatternMatching extends App {
   case class Or[A, B](a: A, b: B)
   val either = Or(2, "two")
   val humanDescription = either match {
+//    case Or(number,string) => s"$number is written as $string"
     case number Or string => s"$number is written as $string"
+//  not working for 3 parameters though
   }
   println(humanDescription)
 
@@ -77,12 +80,14 @@ object AdvancedPatternMatching extends App {
     case List(1, _*) => "starting with 1"
   }
 
-  abstract class MyList[+A] {
+  // defining +A allows us to send MyList[Nothing] in the place of MyList[Int]
+  abstract class MyList[A] {
     def head: A = ???
     def tail: MyList[A] = ???
   }
-  case object Empty extends MyList[Nothing]
-  case class Cons[+A](override val head: A, override val tail: MyList[A]) extends MyList[A]
+//  case object Empty extends MyList[Nothing]
+  case object Empty extends MyList[Int]
+  case class Cons[A](override val head: A, override val tail: MyList[A]) extends MyList[A]
 
   object MyList {
     def unapplySeq[A](list: MyList[A]): Option[Seq[A]] =
@@ -90,9 +95,9 @@ object AdvancedPatternMatching extends App {
       else unapplySeq(list.tail).map(list.head +: _)
   }
 
-  val myList: MyList[Int] = Cons(1, Cons(2, Cons(3, Empty)))
+  val myList: MyList[Int] = Cons(2, Cons(3, Cons(4, Empty)))
   val decomposed = myList match {
-    case MyList(1, 2, _*) => "starting with 1, 2"
+    case MyList(x, y, z, _*) => "starting with 1, 2 " + x + y + z
     case _ => "something else"
   }
 
@@ -114,6 +119,7 @@ object AdvancedPatternMatching extends App {
   }
 
   println(bob match {
+//  automatically get triggers
     case PersonWrapper(n) => s"This person's name is $n"
     case _ => "An alien"
   })

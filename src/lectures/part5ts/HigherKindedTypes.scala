@@ -71,9 +71,9 @@ object HigherKindedTypes extends App {
 
 
   val monadList = new MonadList(List(1,2,3))
-  monadList.flatMap(x => List(x, x + 1)) // List[Int]
+  println(monadList.flatMap(x => List(x, x + 1))) // List[Int]
   // Monad[List, Int] => List[Int]
-  monadList.map(_ * 2) // List[Int
+  println(monadList.map(_ * 2)) // List[Int
   // Monad[List, Int] => List[Int]
 
   println(multiply(List(1,2), List("a", "b")))

@@ -6,23 +6,25 @@ package lectures.part5ts
 object TypeMembers extends App {
 
 
-  class Animal
+  class World
+  class Animal extends World
   class Dog extends Animal
   class Cat extends Animal
+  class Breed extends Dog
 
   class AnimalCollection {
-    type AnimalType // abstract type member
+    type AnimalType = Number
     type BoundedAnimal <: Animal
-    type SuperBoundedAnimal >: Dog <: Animal
+    type SuperBoundedAnimal >: Dog
     type AnimalC = Cat
   }
 
   val ac = new AnimalCollection
-  val dog: ac.AnimalType = ???
+  val dog: ac.AnimalType = 5
 
-  //  val cat: ac.BoundedAnimal = new Cat
+//    val cat: ac.BoundedAnimal = new World
 
-  val pup: ac.SuperBoundedAnimal = new Dog
+  val pup: ac.SuperBoundedAnimal = new Breed
   val cat: ac.AnimalC = new Cat
 
   type CatAlias = Cat
@@ -59,7 +61,7 @@ object TypeMembers extends App {
   }
 
   // NOT OK
-//  class CustomList(hd: String, tl: CustomList) extends MList with ApplicableToNumbers {
+//  class CustomList(hd: String, tl: CustomList) extends ApplicableToNumbers with MList {
 //    type A = String
 //    def head = hd
 //    def tail = tl

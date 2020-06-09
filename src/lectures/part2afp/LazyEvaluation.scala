@@ -56,7 +56,7 @@ object LazyEvaluation extends App {
   val gt20 = lt30.filter(greaterThan20)
   println(gt20)
 
-  val lt30lazy = numbers.withFilter(lessThan30) // lazy vals under the hood
+  val lt30lazy = numbers.withFilter(lessThan30) // withFilter - lazy vals under the hood
   val gt20lazy = lt30lazy.withFilter(greaterThan20)
   println
   gt20lazy.foreach(println)

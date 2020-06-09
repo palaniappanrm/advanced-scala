@@ -32,10 +32,12 @@ object ScalaJavaConversions extends App {
   val numbers = List(1,2,3)
   val juNumbers = numbers.asJava
   val backToScala = juNumbers.asScala
-  println(backToScala eq numbers) // false
-  println(backToScala == numbers) // true
+  println(backToScala eq numbers) // false -> reference comparison
+  println(backToScala == numbers) // true -> value comparison
 
-  //  juNumbers.add(7)
+    numbers.appended(5)
+//  abstract list
+//    juNumbers.add(7)
 
   /*
     Exercise
@@ -50,7 +52,7 @@ object ScalaJavaConversions extends App {
     if (o.isPresent) Some(o.get) else None
   )
 
-  val juOptional: ju.Optional[Int] = ju.Optional.of(2)
+  val juOptional: ju.Optional[Int] = ju.Optional.empty()
   val scalaOption = juOptional.asScala
   println(scalaOption)
 

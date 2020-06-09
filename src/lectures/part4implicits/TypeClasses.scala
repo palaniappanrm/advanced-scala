@@ -13,7 +13,7 @@ object TypeClasses extends App {
     override def toHtml: String = s"<div>$name ($age yo) <a href=$email/> </div>"
   }
 
-  User("John", 32, "john@rockthejvm.com").toHtml
+  println(User("John", 32, "john@rockthejvm.com").toHtml)
   /*
     1 - for the types WE write
     2 - ONE implementation out of quite a number
@@ -100,11 +100,15 @@ object TypeClasses extends App {
   def htmlBoilerplate[T](content: T)(implicit serializer: HTMLSerializer[T]): String =
     s"<html><body> ${content.toHTML(serializer)}</body></html>"
 
+  println(htmlBoilerplate(2))
+
   def htmlSugar[T : HTMLSerializer](content: T): String = {
     val serializer = implicitly[HTMLSerializer[T]]
     // use serializer
     s"<html><body> ${content.toHTML(serializer)}</body></html>"
   }
+
+  println(htmlSugar(2))
 
   // implicitly
   case class Permissions(mask: String)
@@ -112,7 +116,7 @@ object TypeClasses extends App {
 
   // in some other part of the  code
   val standardPerms = implicitly[Permissions]
-
+  println(standardPerms.mask)
 
 }
 

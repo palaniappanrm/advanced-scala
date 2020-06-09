@@ -23,7 +23,7 @@ object StructuralTypes extends App {
   def closeQuietly(unifiedCloseable: UnifiedCloseable): Unit = unifiedCloseable.close()
 
   closeQuietly(new JavaCloseable {
-    override def close(): Unit = ???
+    override def close(): Unit = println("Java closed")
   })
   closeQuietly(new HipsterCloseable)
 
@@ -82,7 +82,7 @@ object StructuralTypes extends App {
   }
 
   class Human {
-    def head: Brain = new Brain
+    def head: String = "Brainz"
   }
 
   class Brain {
@@ -114,11 +114,12 @@ object StructuralTypes extends App {
   /*
     is compatible with a CBL and with a Human? Yes.
    */
-  val brainzList = CBCons(new Brain, CBNil)
+  var human = new Human
+  val brainzList = CBCons(human, CBNil)
   val stringsList = CBCons("Brainz", CBNil)
 
-  HeadEqualizer.===(brainzList, new Human)
+  println(HeadEqualizer.===(brainzList, human))
   // problem:
-  HeadEqualizer.===(new Human, stringsList) // not type safe
+  println(HeadEqualizer.===(new Human, stringsList)) // not type safe
 
 }

@@ -36,7 +36,9 @@ object PimpMyLibrary extends App {
     def isOdd: Boolean = richInt.value % 2 != 0
   }
 
-  new RichInt(42).sqrt
+//  implicit def intToRichInt(value: Int): RichInt = new RichInt(value)
+
+  println(new RichInt(42).sqrt)
 
   42.isEven // new RichInt(42).isEven
   // type enrichment = pimping
@@ -75,6 +77,8 @@ object PimpMyLibrary extends App {
 
   // "3" / 4
   implicit def stringToInt(string: String): Int = Integer.valueOf(string)
+  println("3".asInt + 4)
+  println("3" + 4) // string addition takes precedence
   println("6" / 2) // stringToInt("6") / 2
 
   // equivalent: implicit class RichAltInt(value: Int)

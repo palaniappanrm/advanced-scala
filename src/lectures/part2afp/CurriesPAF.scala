@@ -9,6 +9,8 @@ object CurriesPAF extends App {
   val superAdder: Int => Int => Int =
     x => y => x + y
 
+  println(superAdder)
+
   val add3 = superAdder(3) // Int => Int = y => 3 + y
   println(add3(5))
   println(superAdder(3)(5)) // curried function
@@ -16,15 +18,25 @@ object CurriesPAF extends App {
   // METHOD!
   def curriedAdder(x: Int)(y: Int): Int = x + y // curried method
 
+  //can't do the below thing since it's a method not a function
+//  println(curriedAdder)
+
   val add4: Int => Int = curriedAdder(4)
   // lifting = ETA-EXPANSION
+
+  println(add4)
+  println(add4(2))
 
   // functions != methods (JVM limitation)
   def inc(x: Int) = x + 1
   List(1,2,3).map(x => inc(x))  // ETA-expansion
 
   // Partial function applications
+//  val add51 = curriedAdder(5)
+//  println(add51)
   val add5 = curriedAdder(5) _ // Int => Int
+  println(add5)
+  println(add5(1))
 
   // EXERCISE
   val simpleAddFunction = (x: Int, y: Int) => x + y
@@ -35,18 +47,27 @@ object CurriesPAF extends App {
   // as many different implementations of add7 using the above
   // be creative!
   val add7 = (x: Int) => simpleAddFunction(7, x)  // simplest
+  println(add7)
+  println(add7(3))
   val add7_2 = simpleAddFunction.curried(7)
+  println(add7_2)
+  println(add7_2(3))
   val add7_6 = simpleAddFunction(7, _: Int) // works as well
+  println(add7_6)
+  println(add7_6(3))
 
   val add7_3 = curriedAddMethod(7) _  // PAF
+  println(add7_3)
   val add7_4 = curriedAddMethod(7)(_) // PAF = alternative syntax
-
+  println(add7_4)
   val add7_5 = simpleAddMethod(7, _: Int) // alternative syntax for turning methods into function values
                 // y => simpleAddMethod(7, y)
+  println(add7_5)
 
   // underscores are powerful
   def concatenator(a: String, b: String, c: String) = a + b + c
   val insertName = concatenator("Hello, I'm ", _: String, ", how are you?") // x: String => concatenator(hello, x, howarewyou)
+  val name = (x: String) => concatenator("hello", x, "howarewyou")
   println(insertName("Daniel"))
 
   val fillInTheBlanks = concatenator("Hello, ", _: String, _: String) // (x, y) => concatenator("Hello, ", x, y)
@@ -62,7 +83,8 @@ object CurriesPAF extends App {
 
   val simpleFormat = curriedFormatter("%4.2f") _ // lift
   val seriousFormat = curriedFormatter("%8.6f") _
-  val preciseFormat = curriedFormatter("%14.12f") _
+  val preciseFormat: Double=>String = curriedFormatter("%14.12f")
+  println(preciseFormat)
 
   println(numbers.map(curriedFormatter("%14.12f"))) // compiler does sweet eta-expansion for us
 
@@ -71,11 +93,18 @@ object CurriesPAF extends App {
         - functions vs methods
         - parameters: by-name vs 0-lambda
    */
+  def byNameAlter(n: Int) = n + 1
   def byName(n: => Int) = n + 1
   def byFunction(f: () => Int) = f() + 1
 
   def method: Int = 42
   def parenMethod(): Int = 42
+
+  byNameAlter(method)
+  println(byName(parenMethod()))
+  println(byName( ( () => 42)() ) )
+  byFunction(()=>1)
+  byFunction(parenMethod)
 
   /*
     calling byName and byFunction

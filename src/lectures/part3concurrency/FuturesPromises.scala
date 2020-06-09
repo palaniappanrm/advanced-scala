@@ -54,6 +54,7 @@ object FuturesPromises extends App {
     // API
     def fetchProfile(id: String): Future[Profile] = Future {
       // fetching from the DB
+      println(id + " " + names(id))
       Thread.sleep(random.nextInt(300))
       Profile(id, names(id))
     }
@@ -67,16 +68,17 @@ object FuturesPromises extends App {
 
   // client: mark to poke bill
   val mark = SocialNetwork.fetchProfile("fb.id.1-zuck")
-//  mark.onComplete {
-//    case Success(markProfile) => {
-//      val bill = SocialNetwork.fetchBestFriend(markProfile)
-//      bill.onComplete {
-//        case Success(billProfile) => markProfile.poke(billProfile)
-//        case Failure(e) => e.printStackTrace()
-//      }
-//    }
-//    case Failure(ex) => ex.printStackTrace()
-//  }
+
+  mark.onComplete {
+    case Success(markProfile) => {
+      val bill = SocialNetwork.fetchBestFriend(markProfile)
+      bill.onComplete {
+        case Success(billProfile) => markProfile.poke(billProfile)
+        case Failure(e) => e.printStackTrace()
+      }
+    }
+    case Failure(ex) => ex.printStackTrace()
+  }
 
 
   // functional composition of futures
@@ -84,6 +86,10 @@ object FuturesPromises extends App {
   val nameOnTheWall = mark.map(profile => profile.name)
   val marksBestFriend = mark.flatMap(profile => SocialNetwork.fetchBestFriend(profile))
   val zucksBestFriendRestricted = marksBestFriend.filter(profile => profile.name.startsWith("Z"))
+
+//  println(nameOnTheWall)
+//  println(marksBestFriend)
+//  println(zucksBestFriendRestricted)
 
   // for-comprehensions
   for {
@@ -93,16 +99,23 @@ object FuturesPromises extends App {
 
   Thread.sleep(1000)
 
+  val aProfile = SocialNetwork.fetchProfile("unknown id");
+
+  aProfile.onComplete(aProfile => println(aProfile.get))
+
   // fallbacks
   val aProfileNoMatterWhat = SocialNetwork.fetchProfile("unknown id").recover {
     case e: Throwable => Profile("fb.id.0-dummy", "Forever alone")
   }
 
+  aProfileNoMatterWhat.onComplete(aProfileNoMatterWhat => println(aProfileNoMatterWhat.get))
+
   val aFetchedProfileNoMatterWhat = SocialNetwork.fetchProfile("unknown id").recoverWith {
     case e: Throwable => SocialNetwork.fetchProfile("fb.id.0-dummy")
   }
 
-  val fallbackResult =  SocialNetwork.fetchProfile("unknown id").fallbackTo(SocialNetwork.fetchProfile("fb.id.0-dummy"))
+  val fallbackResult =  SocialNetwork.fetchProfile("unknown id")
+                          .fallbackTo(SocialNetwork.fetchProfile("fb.id.0-dummy"))
 
   // online banking app
   case class User(name: String)

@@ -10,14 +10,19 @@ object DarkSugars extends App {
   // syntax sugar #1: methods with single param
   def singleArgMethod(arg: Int): String = s"$arg little ducks..."
 
+// only works for single parameter
   val description = singleArgMethod {
     // write some complex code
     42
   }
 
+  println(description)
+
   val aTryInstance = Try {  // java's try {...}
     throw new RuntimeException
   }
+
+  println(aTryInstance)
 
   List(1,2,3).map { x =>
     x + 1
@@ -55,15 +60,19 @@ object DarkSugars extends App {
   // List(3,4).::(2)
   // ?!
 
+  println(prependedList)
+
   // scala spec: last char decides associativity of method
-  1 :: 2 :: 3 :: List(4, 5)
-  List(4,5).::(3).::(2).::(1) // equivalent
+  println(1 :: 2 :: 3 :: List(4, 5))
+  println(List(4,5).::(3).::(2).::(1)) // equivalent
 
   class MyStream[T] {
     def -->:(value: T): MyStream[T] = this // actual implementation here
   }
 
   val myStream = 1 -->: 2 -->: 3 -->: new MyStream[Int]
+
+  println(myStream)
 
   // syntax sugar #4: multi-word method naming
 
@@ -75,11 +84,15 @@ object DarkSugars extends App {
   lilly `and then said` "Scala is so sweet!"
 
   // syntax sugar #5: infix types
-  class Composite[A, B]
-  val composite: Int Composite String = ???
+//  class Composite[A, B]
+//  val composite: Int Composite String = ???
+//
+//  println(composite)
 
-  class -->[A, B]
-  val towards: Int --> String = ???
+//  class -->[A, B]
+//  val towards: Int --> String = ???
+//
+//  println(towards)
 
   // syntax sugar #6: update() is very special, much like apply()
   val anArray = Array(1,2,3)
@@ -91,11 +104,16 @@ object DarkSugars extends App {
   class Mutable {
     private var internalMember: Int = 0 // private for OO encapsulation
     def member = internalMember // "getter"
+    def member(x : Int) = internalMember = x
     def member_=(value: Int): Unit =
       internalMember = value // "setter"
   }
 
   val aMutableContainer = new Mutable
+  println(aMutableContainer.member)
+  aMutableContainer.member(30)
+  println(aMutableContainer.member)
   aMutableContainer.member = 42 // rewrittern as aMutableContainer.member_=(42)
+  println(aMutableContainer.member)
 
 }
